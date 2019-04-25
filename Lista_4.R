@@ -2,4 +2,9 @@
 
 #Questão 01
 
-1+1
+install.packages("readxl")
+library(readxl)
+
+setwd("C:/GitHub/Lista_4/Lista_4/dados_encontro_2_ufpe")
+
+
