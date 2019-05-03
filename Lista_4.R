@@ -1,7 +1,7 @@
-#Lista_04
+##Lista_04####
 
 ##Questão 02####
-#a
+#Ponto 1
 
 setwd("C:/GitHub/Lista_4/Lista_4/dados_encontro_2_ufpe") #definindo o diret?rio
 
@@ -24,7 +24,7 @@ pnud_pe_2010 <- PNUD %>% filter(ANO==2010&UF==26) #filtrando por ano e estado
 rm(PNUD)
 rm(Atlas_2013) #removendo bases que n?o ser?o mais utilizadas
 
-#b
+#Ponto 2
 
 View(docentes_pe) #analisando a base de dados 
 
@@ -36,7 +36,7 @@ dim(docentes_pe_selecao) #dimens?o da base
 
 head(docentes_pe_selecao) #analisando a base
 
-#c
+#Ponto 3
 
 View(matricula_pe) #analisando a base de dados
 
@@ -46,7 +46,7 @@ matricula_pe_selecao <- matricula_pe%>% filter(NU_IDADE > 1, NU_IDADE < 25)#filt
 
 summary(matricula_pe_selecao$NU_IDADE) #analisando a base de dados do descri??o
 
-#d
+#Ponto 4
 
 # Matriculas
 matriculas_pe_sel <- matricula_pe_selecao %>% group_by(CO_MUNICIPIO) %>%
@@ -97,7 +97,7 @@ median(docentes_matriculas_pe_sel$n_matriculas)/median(docentes_matriculas_pe_se
 
 summary(docentes_matriculas_pe_sel$n_matriculas/docentes_matriculas_pe_sel$n_docentes)
 
-#E
+#Ponto 5
 
 #Juntando base de dados do PNUD e Alunos por docente
 
@@ -128,19 +128,19 @@ censo_pnud_pe_sel["177", ]
 #O código 177 (de maior média) é Tupatininga que tem como IDHM o valor de 0519
 
 
-#F
+#Ponto 6
 
 cor(censo_pnud_pe_sel_docalu$IDHM, censo_pnud_pe_sel_docalu$DocAlu) #Valor da correlação
 
 cor.test(censo_pnud_pe_sel_docalu$IDHM, censo_pnud_pe_sel_docalu$DocAlu) #Testando a correlação
 
-#G
+#Ponto 7
 
 save(censo_pnud_pe_sel_docalu, file = "censo_pnud_pe_sel_docalu.RData") #salvando em Rdata
 
 
-# 3
+##Questão 3####
 
-ggplot(censo_pnud_pe_sel_docalu, aes(IDHM, DocAlu)) + geom_point()
+ggplot(censo_pnud_pe_sel_docalu, aes(IDHM, DocAlu)) + geom_point() #Gerando o gráfico de dispersão
 
 
