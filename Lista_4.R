@@ -3,12 +3,12 @@
 ##Quest√£o 02####
 #a
 
-setwd("C:/GitHub/Lista_4/Lista_4/dados_encontro_2_ufpe") #definindo o diretÛrio
+setwd("C:/GitHub/Lista_4/Lista_4/dados_encontro_2_ufpe") #definindo o diret?rio
 
 load("matricula_pe_censo_escolar_2016.RData")
 load("docentes_pe_censo_escolar_2016.RData")
 load("turmas_pe_censo_escolar_2016.RData")
-load("escolas_pe_censo_escolar_2016.RData") #Carregando todos os dados necess·rios
+load("escolas_pe_censo_escolar_2016.RData") #Carregando todos os dados necess?rios
 
 if(require(tidyverse)==F)install.packages('tidyverse');require(tidyverse)
 if(require(readxl)==F)install.packages('readxl');require(readxl) #instalando e carregando pacotes
@@ -22,7 +22,7 @@ unique(PNUD$ANO) #analisando a base de dados
 pnud_pe_2010 <- PNUD %>% filter(ANO==2010&UF==26) #filtrando por ano e estado
 
 rm(PNUD)
-rm(Atlas_2013) #removendo bases que n„o ser„o mais utilizadas
+rm(Atlas_2013) #removendo bases que n?o ser?o mais utilizadas
 
 #b
 
@@ -32,7 +32,7 @@ names(docentes_pe) #analisando variaveis da base de dados
 
 docentes_pe_selecao <- docentes_pe%>% filter(NU_IDADE > 18, NU_IDADE < 70) #filtrando a base de dados por idade
 
-dim(docentes_pe_selecao) #dimens„o da base
+dim(docentes_pe_selecao) #dimens?o da base
 
 head(docentes_pe_selecao) #analisando a base
 
@@ -40,11 +40,11 @@ head(docentes_pe_selecao) #analisando a base
 
 View(matricula_pe) #analisando a base de dados
 
-names(matricula_pe) #analisando as vari·veis da base de dados
+names(matricula_pe) #analisando as vari?veis da base de dados
 
 matricula_pe_selecao <- matricula_pe%>% filter(NU_IDADE > 1, NU_IDADE < 25)#filtrando a base de dados por idade 
 
-summary(matricula_pe_selecao$NU_IDADE) #analisando a base de dados do descriÁ„o
+summary(matricula_pe_selecao$NU_IDADE) #analisando a base de dados do descri??o
 
 #d
 
@@ -85,11 +85,62 @@ docentes_matriculas_pe_sel <- docentes_pe_sel %>% full_join(matriculas_pe_sel,
 
 View(docentes_matriculas_pe_sel)
 
-# MÈdia AritmÈtica - Alunos por docentes
+# M√©dia Aritm√©tica - Alunos por docentes
 
-mean(docentes_matriculas_pe_sel$n_matriculas)/mean(docentes_matriculas_pe_sel$n_docentes)
+Docentes_Alunos <- docentes_matriculas_pe_sel$n_matriculas/docentes_matriculas_pe_sel$n_docentes
 
 #Mediana - Alunos por docentes
 
 median(docentes_matriculas_pe_sel$n_matriculas)/median(docentes_matriculas_pe_sel$n_docentes)
+
+#Valores descritivos gerais
+
+summary(docentes_matriculas_pe_sel$n_matriculas/docentes_matriculas_pe_sel$n_docentes)
+
+#E
+
+#Juntando base de dados do PNUD e Alunos por docente
+
+censo_pnud_pe_sel <-pnud_pe_2010%>%full_join(matriculas_pe_sel,by =c("Codmun7"="CO_MUNICIPIO"))
+
+# salvando nova base
+DocAlu <- (docentes_matriculas_pe_sel$n_matriculas/docentes_matriculas_pe_sel$n_docentes)
+save(DocAlu, file = "DocAlu.RData")
+write.csv2(DocAlu, file = "DocAlu.csv",
+           row.names = F)
+
+# Carregando base de dados 
+setwd("C:/GitHub/Lista_4/Lista_4/dados_encontro_2_ufpe")
+
+load("DocAlu.RData")
+
+# Fazendo mutate
+censo_pnud_pe_sel_docalu <- censo_pnud_pe_sel %>%  mutate(DocAlu) # Fazendo mutate
+
+names(censo_pnud_pe_sel_docalu) #Analisando se a coluna foi criada
+
+#Identificando a maior m√©dia
+summary(docentes_matriculas_pe_sel$n_matriculas/docentes_matriculas_pe_sel$n_docentes)
+
+#Analisando o que h√° na linha 177 (de maior m√©dia)
+censo_pnud_pe_sel["177", ]
+
+#O c√≥digo 177 (de maior m√©dia) √© Tupatininga que tem como IDHM o valor de 0519
+
+
+#F
+
+cor(censo_pnud_pe_sel_docalu$IDHM, censo_pnud_pe_sel_docalu$DocAlu) #Valor da correla√ß√£o
+
+cor.test(censo_pnud_pe_sel_docalu$IDHM, censo_pnud_pe_sel_docalu$DocAlu) #Testando a correla√ß√£o
+
+#G
+
+save(censo_pnud_pe_sel_docalu, file = "censo_pnud_pe_sel_docalu.RData") #salvando em Rdata
+
+
+# 3
+
+ggplot(censo_pnud_pe_sel_docalu, aes(IDHM, DocAlu)) + geom_point()
+
 
