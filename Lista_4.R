@@ -30,7 +30,7 @@ View(docentes_pe) #analisando a base de dados
 
 names(docentes_pe) #analisando variaveis da base de dados
 
-docentes_pe_selecao <- docentes_pe%>% filter(NU_IDADE > 18, NU_IDADE < 70) #filtrando a base de dados por idade
+docentes_pe_selecao <- docentes_pe%>% filter(NU_IDADE > 17, NU_IDADE < 71) #filtrando a base de dados por idade
 
 dim(docentes_pe_selecao) #dimensao da base
 
@@ -44,7 +44,7 @@ names(matricula_pe) #analisando as variaveis da base de dados
 
 matricula_pe_selecao <- matricula_pe%>% filter(NU_IDADE > 0, NU_IDADE < 26)#filtrando a base de dados por idade 
 
-summary(matricula_pe_selecao$NU_IDADE) #analisando a base de dados do descriçao
+summary(matricula_pe_selecao$NU_IDADE) #analisando a base de dados do descri?ao
 
 #Ponto 4
 
@@ -144,5 +144,4 @@ save(censo_pnud_pe_sel_docalu, file = "censo_pnud_pe_sel_docalu.RData") #salvand
 ##Questao 3####
 
 ggplot(censo_pnud_pe_sel_docalu, aes(IDHM, DocAlu)) + geom_point() #Gerando o grafico de dispersao
-
 
