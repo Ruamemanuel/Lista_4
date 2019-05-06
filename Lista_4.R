@@ -1,14 +1,14 @@
 ##Lista_04####
 
-##Questão 02####
+##Questao 02####
 #Ponto 1
 
-setwd("C:/GitHub/Lista_4/Lista_4/dados_encontro_2_ufpe") #definindo o diret?rio
+setwd("C:/GitHub/Lista_4/Lista_4/dados_encontro_2_ufpe") #definindo o diretorio
 
 load("matricula_pe_censo_escolar_2016.RData")
 load("docentes_pe_censo_escolar_2016.RData")
 load("turmas_pe_censo_escolar_2016.RData")
-load("escolas_pe_censo_escolar_2016.RData") #Carregando todos os dados necess?rios
+load("escolas_pe_censo_escolar_2016.RData") #Carregando todos os dados necessarios
 
 if(require(tidyverse)==F)install.packages('tidyverse');require(tidyverse)
 if(require(readxl)==F)install.packages('readxl');require(readxl) #instalando e carregando pacotes
@@ -22,7 +22,7 @@ unique(PNUD$ANO) #analisando a base de dados
 pnud_pe_2010 <- PNUD %>% filter(ANO==2010&UF==26) #filtrando por ano e estado
 
 rm(PNUD)
-rm(Atlas_2013) #removendo bases que n?o ser?o mais utilizadas
+rm(Atlas_2013) #removendo bases que nao serao utilizadas
 
 #Ponto 2
 
@@ -32,7 +32,7 @@ names(docentes_pe) #analisando variaveis da base de dados
 
 docentes_pe_selecao <- docentes_pe%>% filter(NU_IDADE > 18, NU_IDADE < 70) #filtrando a base de dados por idade
 
-dim(docentes_pe_selecao) #dimens?o da base
+dim(docentes_pe_selecao) #dimensao da base
 
 head(docentes_pe_selecao) #analisando a base
 
@@ -40,11 +40,11 @@ head(docentes_pe_selecao) #analisando a base
 
 View(matricula_pe) #analisando a base de dados
 
-names(matricula_pe) #analisando as vari?veis da base de dados
+names(matricula_pe) #analisando as variaveis da base de dados
 
-matricula_pe_selecao <- matricula_pe%>% filter(NU_IDADE > 1, NU_IDADE < 25)#filtrando a base de dados por idade 
+matricula_pe_selecao <- matricula_pe%>% filter(NU_IDADE > 0, NU_IDADE < 26)#filtrando a base de dados por idade 
 
-summary(matricula_pe_selecao$NU_IDADE) #analisando a base de dados do descri??o
+summary(matricula_pe_selecao$NU_IDADE) #analisando a base de dados do descri�ao
 
 #Ponto 4
 
@@ -105,7 +105,9 @@ censo_pnud_pe_sel <-pnud_pe_2010%>%full_join(matriculas_pe_sel,by =c("Codmun7"="
 
 # salvando nova base
 DocAlu <- (docentes_matriculas_pe_sel$n_matriculas/docentes_matriculas_pe_sel$n_docentes)
+
 save(DocAlu, file = "DocAlu.RData")
+
 write.csv2(DocAlu, file = "DocAlu.csv",
            row.names = F)
 
@@ -119,18 +121,18 @@ censo_pnud_pe_sel_docalu <- censo_pnud_pe_sel %>%  mutate(DocAlu) # Fazendo muta
 
 names(censo_pnud_pe_sel_docalu) #Analisando se a coluna foi criada
 
-#Identificando a maior média
+#Identificando a maior media
 summary(docentes_matriculas_pe_sel$n_matriculas/docentes_matriculas_pe_sel$n_docentes)
 
-#Analisando o que há na linha 177 (de maior média)
+#Analisando o que ha na linha 177 (de maior média)
 censo_pnud_pe_sel["177", ]
 
-#O código 177 (de maior média) é Tupatininga que tem como IDHM o valor de 0519
+#O codigo 177 (de maior media) e Tupatininga que tem como IDHM o valor de 0519
 
 
 #Ponto 6
 
-cor(censo_pnud_pe_sel_docalu$IDHM, censo_pnud_pe_sel_docalu$DocAlu) #Valor da correlação
+cor(censo_pnud_pe_sel_docalu$IDHM, censo_pnud_pe_sel_docalu$DocAlu) #Valor da correlacao
 
 cor.test(censo_pnud_pe_sel_docalu$IDHM, censo_pnud_pe_sel_docalu$DocAlu) #Testando a correlação
 
@@ -139,8 +141,8 @@ cor.test(censo_pnud_pe_sel_docalu$IDHM, censo_pnud_pe_sel_docalu$DocAlu) #Testan
 save(censo_pnud_pe_sel_docalu, file = "censo_pnud_pe_sel_docalu.RData") #salvando em Rdata
 
 
-##Questão 3####
+##Questao 3####
 
-ggplot(censo_pnud_pe_sel_docalu, aes(IDHM, DocAlu)) + geom_point() #Gerando o gráfico de dispersão
+ggplot(censo_pnud_pe_sel_docalu, aes(IDHM, DocAlu)) + geom_point() #Gerando o grafico de dispersao
 
 
